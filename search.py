@@ -71,7 +71,7 @@ def tinyMazeSearch(problem):
     s = Directions.SOUTH
     w = Directions.WEST
     return  [s, s, w, s, w, w, s, w]
-
+###IMPORTANT!!!!!!
 def depthFirstSearch(problem: SearchProblem):
     """
     Search the deepest nodes in the search tree first.
@@ -82,16 +82,61 @@ def depthFirstSearch(problem: SearchProblem):
     To get started, you might want to try some of these simple commands to
     understand the search problem that is being passed in:
     """
-    print("Start:", problem.getStartState())
-    print("Is the start a goal?", problem.isGoalState(problem.getStartState()))
-    print("Start's successors:", problem.getSuccessors(problem.getStartState()))
-    "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+    #print("Start:", problem.getStartState())
+    #print("Is the start a goal?", problem.isGoalState(problem.getStartState()))
+    #print("Start's successors:", problem.getSuccessors(problem.getStartState()))
 
+
+    visited = []
+    my_stack = util.Stack()
+    goal_found = False
+    moves = []
+    my_stack.push((problem.getStartState(), moves, 0)) 
+
+    while not goal_found: 
+        current_state = problem.getSuccessors(problem.getStartState())
+        current_state, moves, _ = my_stack.pop()  
+
+
+        if problem.isGoalState(current_state):
+            goal_found = True
+            return moves
+        else:
+            visited.append(current_state)
+            for child, move, cost in problem.getSuccessors(current_state):
+                if child not in visited:
+                    my_stack.push((child, moves+[move], cost))
+
+#CREATE general search with frontier 
 def breadthFirstSearch(problem: SearchProblem):
     """Search the shallowest nodes in the search tree first."""
-    "*** YOUR CODE HERE ***"
-    util.raiseNotDefined()
+
+
+    visited = []
+    my_queue = util.Queue()
+    goal_found = False
+    moves = []
+    my_queue.push((problem.getStartState(), moves, 0))    
+
+    while not goal_found: 
+        current_state = problem.getSuccessors(problem.getStartState())
+        current_state, moves, _ = my_queue.pop()
+
+        if problem.isGoalState(current_state): 
+            goal_found = True
+            return moves
+        else:
+            visited.append(current_state)
+            for child, move, cost in problem.getSuccessors(current_state):
+                if child not in visited:
+                    my_queue.push((child, moves+[move], cost))
+
+###again with the contains, and im also not sure any of this is right
+#it keeps giving me errors but not specific errors
+#i think it has something to do with the append function but i dont know how else to implement it?
+
+
+
 
 def uniformCostSearch(problem: SearchProblem):
     """Search the node of least total cost first."""
